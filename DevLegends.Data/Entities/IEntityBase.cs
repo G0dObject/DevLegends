@@ -1,6 +1,7 @@
-﻿namespace PetProject.Data.Entityes
+﻿namespace DevLegends.Data.Entities
 {
-	internal interface IEntityBase
+	public interface IEntityBase
 	{
+		public int Id { get; set; }
 	}
 }

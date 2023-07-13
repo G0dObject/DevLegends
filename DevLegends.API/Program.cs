@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Identity.Web;
+using DevLegends.Core.Interfaces;
+using DevLegends.Data;
+using DevLegends.Services;
 
-namespace PetProject.API
+
+namespace DevLegends.API
 {
 	public class Program
 	{
@@ -10,25 +11,30 @@ namespace PetProject.API
 		{
 			WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-			builder.Services.AddAuthentication();
-			builder.Services.AddAuthorization();
-			builder.Services.AddControllers();
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			_ = builder.Services.AddAuthentication();
+			_ = builder.Services.AddAuthorization();
+			_ = builder.Services.AddControllers();
+			_ = builder.Services.AddEndpointsApiExplorer();
+			_ = builder.Services.AddSwaggerGen();
+			_ = builder.Services.AddScoped<IContext, Context>();
+			_ = builder.Services.ServicesRegister();
 
 			WebApplication app = builder.Build();
 
+			app.Services.CreateScope().ServiceProvider.GetRequiredService<IContext>();
+			app.Services.CreateScope().ServiceProvider.GetRequiredService<ITestService>().Do();
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				_ = app.UseSwagger();
+				_ = app.UseSwaggerUI();
 			}
 
-			app.UseHttpsRedirection();
-			app.UseAuthorization();
-			app.UseAuthentication();
-			app.MapControllers();
+			_ = app.UseHttpsRedirection();
+			_ = app.UseAuthorization();
+			_ = app.UseAuthentication();
+			_ = app.MapControllers();
 			app.Run();
+
 		}
 	}
 }

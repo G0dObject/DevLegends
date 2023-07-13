@@ -16,7 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\DevLegends.Core\DevLegends.Core.csproj" />
+    <ProjectReference Include="..\DevLegends.Data\DevLegends.Data.csproj" />
+    <ProjectReference Include="..\DevLegends.DTO\DevLegends.DTO.csproj" />
+    <ProjectReference Include="..\DevLegends.Services\DevLegends.Services.csproj" />
   </ItemGroup>
 
 </Project>

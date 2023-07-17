@@ -1,5 +1,4 @@
-﻿
-namespace DevLegends.Data.Entities.Quests
+﻿namespace DevLegends.Data.Entities.Quest
 {
 	internal class Quest : IEntityBase
 	{

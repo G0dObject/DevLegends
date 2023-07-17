@@ -2,7 +2,7 @@
 using DevLegends.Data.Entities.Clan;
 using DevLegends.Data.Entities.Party;
 using DevLegends.Data.Entities.Player;
-using DevLegends.Data.Entities.Quests;
+using DevLegends.Data.Entities.Quest;
 using DevLegends.Data.Entities.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +19,8 @@ namespace DevLegends.Data
 		private DbSet<Clan> Clans { get; set; }
 		private DbSet<Event> Events { get; set; }
 
-		public Context()
+		public Context(DbContextOptions dbContext) : base(dbContext)
 		{
-			_ = Database.EnsureDeleted();
 			_ = Database.EnsureCreated();
 		}
 

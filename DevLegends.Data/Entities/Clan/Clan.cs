@@ -1,6 +1,6 @@
 ﻿namespace DevLegends.Data.Entities.Clan
 {
-	internal class Clan : IEntityBase
+	public class Clan : IEntityBase
 	{
 		public int Id { get; set; }
 		public required string Name { get; set; }

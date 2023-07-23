@@ -1,7 +1,10 @@
-﻿using DevLegends.DTO.Request.Authorization;
+﻿using DevLegends.Data.Entities.User;
+using DevLegends.DTO.Request.Authorization;
 using DevLegends.DTO.Response;
-using DevLegends.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevLegends.API.Controllers
@@ -10,10 +13,12 @@ namespace DevLegends.API.Controllers
 	[ApiController]
 	public class AuthenticationController : ControllerBase
 	{
-		private readonly IAuthenticationService _authentication;
+		private readonly Services.Interfaces.IAuthenticationService _authentication;
+		private readonly SignInManager<User> _manager;
 
-		public AuthenticationController(IAuthenticationService authentication)
+		public AuthenticationController(Services.Interfaces.IAuthenticationService authentication, SignInManager<User> manager)
 		{
+			_manager = manager;
 			_authentication = authentication;
 		}
 
@@ -38,6 +43,27 @@ namespace DevLegends.API.Controllers
 		{
 			return $"You authorized {User.Identity.Name}";
 		}
+
+
+		[Route("/signin-google")]
+		public IActionResult Signin(string returnUrl)
+		{
+			return new ChallengeResult(
+				GoogleDefaults.AuthenticationScheme,
+				new AuthenticationProperties
+				{
+					RedirectUri = Url.Action(nameof(GoogleCallback), new { returnUrl })
+				});
+		}
+
+		[Route("/signin-callback")]
+		public int GoogleCallback(string returnUrl)
+		{
+			return 1;
+
+		}
 	}
 }
+
+
 

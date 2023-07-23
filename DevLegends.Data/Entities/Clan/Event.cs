@@ -1,6 +1,6 @@
 ﻿namespace DevLegends.Data.Entities.Clan
 {
-	internal class Event : IEntityBase
+	public class Event : IEntityBase
 	{
 		public int Id { get; set; }
 		public DateTime StartAt { get; set; }

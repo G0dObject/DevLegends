@@ -1,6 +1,6 @@
 ﻿namespace DevLegends.Data.Entities.Player
 {
-	internal class PlayerClass : IEntityBase
+	public class PlayerClass : IEntityBase
 	{
 		public int Id { get; set; }
 		public string Name { get; set; } = string.Empty;

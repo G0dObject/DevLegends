@@ -1,5 +1,4 @@
-﻿using DevLegends.Core.Interfaces;
-using DevLegends.Data.Entities.Clan;
+﻿using DevLegends.Data.Entities.Clan;
 using DevLegends.Data.Entities.Party;
 using DevLegends.Data.Entities.Player;
 using DevLegends.Data.Entities.Quest;
@@ -12,12 +11,12 @@ namespace DevLegends.Data
 {
 	public class Context : IdentityDbContext<User, Role, int>, IContext
 	{
-		private DbSet<Player> Players { get; set; }
-		private DbSet<PlayerClass> Classes { get; set; }
-		private DbSet<Quest> Quests { get; set; }
-		private DbSet<Party> Parties { get; set; }
-		private DbSet<Clan> Clans { get; set; }
-		private DbSet<Event> Events { get; set; }
+		public DbSet<Player> Players { get; set; }
+		public DbSet<PlayerClass> Classes { get; set; }
+		public DbSet<Quest> Quests { get; set; }
+		public DbSet<Party> Parties { get; set; }
+		public DbSet<Clan> Clans { get; set; }
+		public DbSet<Event> Events { get; set; }
 
 		public Context(DbContextOptions dbContext) : base(dbContext)
 		{

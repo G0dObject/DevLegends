@@ -1,10 +1,11 @@
 ﻿namespace DevLegends.Data.Entities.Player
 {
-	internal class Player : IEntityBase
+	public class Player : IEntityBase
 	{
 		public int Id { get; set; }
-		internal string Name { get; set; } = string.Empty;
-		internal required PlayerClass Class { get; set; }
-		internal DateTime CreateTime { get; set; }
+		public string Name { get; set; } = string.Empty;
+		public User.User? User { get; set; }
+		public PlayerClass? Class { get; set; }
+		public DateTime CreateTime { get; set; }
 	}
 }

@@ -1,6 +1,9 @@
 ﻿using DevLegends.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Certificate;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,10 +17,12 @@ namespace DevLegends.Services.Extensions
 
 			_ = services.AddAuthentication(options =>
 			{
-				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultAuthenticateScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
+				options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
 				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-			}).AddJwtBearer(options =>
+			}).AddCertificate()
+			.AddJwtBearer(options =>
 			{
 				options.SaveToken = true;
 				options.RequireHttpsMetadata = false;
@@ -30,8 +35,16 @@ namespace DevLegends.Services.Extensions
 					IssuerSigningKey = setting.SecurityKey,
 					ValidateLifetime = false
 				};
+			})
+			.AddGoogle(options =>
+			{
+				options.ClientId = "210778926623-0tu74486tptbf9ihb6cnqe979rkb8dub.apps.googleusercontent.com";
+				options.ClientSecret = "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";
+				options.Scope.Add("profile");
+				options.SignInScheme = IdentityConstants.ExternalScheme;
 			});
-			services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme).AddCertificate();
+
+
 			return services;
 		}
 

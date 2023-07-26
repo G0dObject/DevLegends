@@ -8,4 +8,3 @@
 - ❌Team xp
 - ✔️ Desire to do
 ### ActionScheme
-![ActionScheme](./Img/ReadmeScheme.png)

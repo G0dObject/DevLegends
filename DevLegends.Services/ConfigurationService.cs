@@ -1,5 +1,5 @@
-﻿using DevLegends.Core;
-using DevLegends.Core.Exceptions;
+﻿using DevLegends.Core.Exceptions;
+using DevLegends.Core.Settings;
 using DevLegends.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DevLegends.Services
 {
-	public class ConfigurationService : IConfigurationService
+    public class ConfigurationService : IConfigurationService
 	{
 		private readonly IConfiguration _configuration;
 

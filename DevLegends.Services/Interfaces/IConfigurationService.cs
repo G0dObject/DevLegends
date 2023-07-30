@@ -1,4 +1,4 @@
-﻿using DevLegends.Core;
+﻿using DevLegends.Core.Settings;
 
 namespace DevLegends.Services.Interfaces
 {

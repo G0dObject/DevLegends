@@ -1,5 +1,4 @@
-﻿using DevLegends.Core;
-using DevLegends.Services.DependencyInjection;
+﻿using DevLegends.Core.Settings;
 using DevLegends.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +6,7 @@ using System.Security.Claims;
 
 namespace DevLegends.Services
 {
-	internal class JwTokenGenerator : ITokenGeneratorService
+    internal class JwTokenGenerator : ITokenGeneratorService
 	{
 		private readonly IConfigurationService _configuration;
 

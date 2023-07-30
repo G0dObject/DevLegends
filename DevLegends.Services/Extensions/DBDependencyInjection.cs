@@ -7,7 +7,7 @@ namespace DevLegends.Services.Extensions
 {
 	public static class DbDependencyInjection
 	{
-		public static IServiceCollection AddDbDependency(this IServiceCollection services, IConfiguration configuration, bool IsDevelopment = false)
+		public static IServiceCollection AddDbDependency(this IServiceCollection services, IConfiguration configuration)
 		{
 			string? connectionString = configuration.GetConnectionString("SqLite");
 			_ = services.AddDbContext<Context>(option =>

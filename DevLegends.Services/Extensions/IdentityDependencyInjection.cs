@@ -19,7 +19,7 @@ namespace DevLegends.Services.Extensions
 				option.SignIn.RequireConfirmedPhoneNumber = false;
 				option.SignIn.RequireConfirmedEmail = false;
 				option.SignIn.RequireConfirmedAccount = false;
-			}).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders();
+			}).AddEntityFrameworkStores<Context>().AddDefaultTokenProviders().AddSignInManager();
 
 			return services;
 		}

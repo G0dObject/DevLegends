@@ -4,7 +4,7 @@
 	{
 		public string? Token { get; set; }
 
-		public AuthenticationResponse(string token, int statuscode) : base(statuscode)
+		public AuthenticationResponse(string? token, int statuscode) : base(statuscode)
 		{
 			Token = token;
 		}

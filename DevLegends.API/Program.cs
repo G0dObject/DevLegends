@@ -14,7 +14,13 @@ namespace DevLegends.API
 			_ = builder.Services.AddSwaggerGen();
 			_ = builder.Services.ServicesRegister();
 			_ = builder.Services.AddIdentityDependency();
+			_ = builder.Services.AddCors(options => options
+			.AddPolicy("Development", (policy) => policy
+			.WithOrigins("https://localhost:3000")
+			.AllowAnyMethod()
+			.AllowAnyHeader()));
 			_ = builder.Services.AddAuthenticationDependency();
+			_ = builder.Services.AddDbDependency(builder.Configuration);
 
 			WebApplication app = builder.Build();
 
@@ -25,12 +31,12 @@ namespace DevLegends.API
 				_ = app.UseDeveloperExceptionPage();
 			}
 
-			_ = app.UseHealthChecks("/alive");
 			_ = app.UseHttpsRedirection();
 			_ = app.UseHttpLogging();
+			_ = app.UseCors("Development");
+			_ = app.MapControllers();
 			_ = app.UseAuthentication();
 			_ = app.UseAuthorization();
-
 
 			app.Run();
 

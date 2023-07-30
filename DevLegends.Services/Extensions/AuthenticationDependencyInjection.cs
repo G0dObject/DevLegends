@@ -1,9 +1,9 @@
-﻿using DevLegends.Services.Interfaces;
+﻿using DevLegends.Core.Settings;
+using DevLegends.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Certificate;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,7 +13,7 @@ namespace DevLegends.Services.Extensions
 	{
 		public static IServiceCollection AddAuthenticationDependency(this IServiceCollection services)
 		{
-			Core.JwtSetting setting = services.BuildServiceProvider().GetRequiredService<IConfigurationService>().GetJwtSettings();
+			JwtSetting setting = services.BuildServiceProvider().GetRequiredService<IConfigurationService>().GetJwtSettings();
 
 			_ = services.AddAuthentication(options =>
 			{
@@ -38,10 +38,12 @@ namespace DevLegends.Services.Extensions
 			})
 			.AddGoogle(options =>
 			{
-				options.ClientId = "210778926623-0tu74486tptbf9ihb6cnqe979rkb8dub.apps.googleusercontent.com";
 				options.ClientSecret = "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";
-				options.Scope.Add("profile");
-				options.SignInScheme = IdentityConstants.ExternalScheme;
+				options.ClientId = "210778926623-0tu74486tptbf9ihb6cnqe979rkb8dub.apps.googleusercontent.com";
+			}).AddGitHub(options =>
+			{
+				options.ClientSecret = "cd33788f112e7c1eaa187d7e6b95521ab5a19ada";
+				options.ClientId = "f634708e11db264aec8a";
 			});
 
 

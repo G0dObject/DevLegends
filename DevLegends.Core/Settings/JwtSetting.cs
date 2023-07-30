@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
-namespace DevLegends.Core
+namespace DevLegends.Core.Settings
 {
 	public class JwtSetting
 	{

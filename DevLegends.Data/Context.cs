@@ -33,5 +33,6 @@ namespace DevLegends.Data
 		{
 			base.OnModelCreating(builder);
 		}
+
 	}
 }

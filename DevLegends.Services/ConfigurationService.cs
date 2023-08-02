@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DevLegends.Services
 {
-    public class ConfigurationService : IConfigurationService
+	public class ConfigurationService : IConfigurationService
 	{
 		private readonly IConfiguration _configuration;
 

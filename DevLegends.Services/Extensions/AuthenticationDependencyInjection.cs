@@ -1,8 +1,5 @@
 ﻿using DevLegends.Core.Settings;
 using DevLegends.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication.Certificate;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -17,9 +14,8 @@ namespace DevLegends.Services.Extensions
 
 			_ = services.AddAuthentication(options =>
 			{
-				options.DefaultAuthenticateScheme = CertificateAuthenticationDefaults.AuthenticationScheme;
-				options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-				options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 				options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 			}).AddCertificate()
 			.AddJwtBearer(options =>

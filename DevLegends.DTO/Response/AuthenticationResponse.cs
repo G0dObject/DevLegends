@@ -12,5 +12,7 @@
 		public AuthenticationResponse(int statuscode) : base(statuscode)
 		{
 		}
+
+
 	}
 }

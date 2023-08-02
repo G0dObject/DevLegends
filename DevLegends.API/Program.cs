@@ -1,5 +1,7 @@
+using DevLegends.DTO.Request.Authorization;
 using DevLegends.Services.DependencyInjection;
 using DevLegends.Services.Extensions;
+using DevLegends.Services.Interfaces;
 
 namespace DevLegends.API
 {
@@ -23,12 +25,18 @@ namespace DevLegends.API
 			_ = builder.Services.AddDbDependency(builder.Configuration);
 
 			WebApplication app = builder.Build();
-
-			if (app.Environment.IsDevelopment())
+			using (app.Services.CreateScope().ServiceProvider.GetRequiredService<IAuthenticationService>().RegisterAsync(new RegisterTransferObject() { Email = "aboba@gmail.com", Password = "aboba123", Username = "aboba" }))
 			{
-				_ = app.UseSwagger();
-				_ = app.UseSwaggerUI();
-				_ = app.UseDeveloperExceptionPage();
+
+			}
+
+			{
+				if (app.Environment.IsDevelopment())
+				{
+					_ = app.UseSwagger();
+					_ = app.UseSwaggerUI();
+					_ = app.UseDeveloperExceptionPage();
+				}
 			}
 
 			_ = app.UseHttpsRedirection();

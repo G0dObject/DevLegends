@@ -4,6 +4,7 @@ using DevLegends.DTO.Response;
 using DevLegends.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using RussianTransliteration;
 using System.Security.Claims;
 
 namespace DevLegends.Services
@@ -75,36 +76,73 @@ namespace DevLegends.Services
 
 		public async Task<AuthenticationResponse?> ExternalLoginAsync(ExternalLoginInfo info)
 		{
-			SignInResult result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+			SignInResult loginResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
 
-			if (result.IsLockedOut)
-			{
-				return new AuthenticationResponse(StatusCodes.Status403Forbidden);
-			}
-
-			if (result.IsNotAllowed)
-			{
-				return new AuthenticationResponse(StatusCodes.Status403Forbidden);
-			}
-
-			if (result.RequiresTwoFactor)
+			if (loginResult.IsLockedOut || loginResult.IsNotAllowed || loginResult.RequiresTwoFactor)
 			{
 				return new AuthenticationResponse(StatusCodes.Status403Forbidden);
 			}
 
 			string? email = info.Principal.FindFirstValue(ClaimTypes.Email);
+			string? name = info.Principal.FindFirstValue(ClaimTypes.Name);
 
-			if (result.Succeeded)
+			User user = NormalizateUser(name, email);
+
+			// Try to find an existing user based on email or name
+			User? existingUser = null;
+			if (!string.IsNullOrEmpty(email))
 			{
-				User? user = await _userManager.FindByEmailAsync(email);
+				existingUser = await _userManager.FindByEmailAsync(email);
+			}
+			else if (!string.IsNullOrEmpty(name))
+			{
+				existingUser = await _userManager.FindByNameAsync(name);
+			}
 
-
-				if (user == null)
+			IdentityResult result;
+			if (existingUser != null)
+			{
+				// If the user exists, add the login info and sign them in
+				result = await _userManager.AddLoginAsync(existingUser, info);
+				if (result.Succeeded)
 				{
-					return null;
+					await _signInManager.SignInAsync(existingUser, isPersistent: false);
 				}
 			}
-			return null;
+			else
+			{
+				// If the user doesn't exist, create a new user and add the login info
+				result = await _userManager.CreateAsync(user);
+				if (result.Succeeded)
+				{
+					result = await _userManager.AddLoginAsync(user, info);
+					if (result.Succeeded)
+					{
+						await Console.Out.WriteLineAsync("authorize");
+						//TODO: Send an email for email confirmation and add a default role as in the Register action
+						await _signInManager.SignInAsync(user, isPersistent: true);
+					}
+				}
+			}
+			List<Claim> authClaims = await GetUserClaims(user);
+			return new AuthenticationResponse(_tokenGenerator.GenerateToken(authClaims), StatusCodes.Status200OK);
+
 		}
+
+		private User NormalizateUser(string username, string? email)
+		{
+			string name = RussianTransliterator.GetTransliteration(username.Replace(" ", ""));
+			User user = new(name);
+			if (email is not null)
+			{
+				user.Email = email;
+			}
+
+			user.SecurityStamp = Guid.NewGuid().ToString();
+			return user;
+
+		}
+
+
 	}
 }

@@ -2,7 +2,6 @@
 using DevLegends.DTO.Request.Authorization;
 using DevLegends.DTO.Response;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -41,21 +40,21 @@ namespace DevLegends.API.Controllers
 		[HttpGet]
 		[Route("AuthTest")]
 		[Authorize]
-		public string Get()
+		public IActionResult Get()
 		{
-			return $"You authorized {User.Identity.Name}";
+			return Ok();
 		}
 
 		[HttpGet]
 		[AllowAnonymous]
-		[Route("external-login")]
+		[Route("ExternalAuth")]
 		public IActionResult ExternalLogin(string provider)
 		{
 			try
 			{
 				AuthenticationProperties properties =
-					_signInManager.ConfigureExternalAuthenticationProperties(provider, Url.Action("ExternalLoginCallback"));
-				return Challenge(properties, GoogleDefaults.AuthenticationScheme);
+					_signInManager.ConfigureExternalAuthenticationProperties(provider, Url.Action(nameof(ExternalLoginCallback)));
+				return Challenge(properties, provider);
 			}
 			catch (Exception e)
 			{
@@ -64,20 +63,17 @@ namespace DevLegends.API.Controllers
 		}
 		[HttpGet]
 		[AllowAnonymous]
-		[Route("external-auth-callback")]
+		[Route("ExternalAuthCallback")]
 		public async Task<IActionResult?> ExternalLoginCallback()
 		{
 			ExternalLoginInfo? user = await _signInManager.GetExternalLoginInfoAsync();
 			if (user == null)
 			{
-				_ = RedirectToAction("ExternalLogin");
+				return RedirectToAction(nameof(ExternalLogin));
 			}
 
 			AuthenticationResponse result = await _authentication.ExternalLoginAsync(user);
-
-			return new JsonResult(result);
-
-
+			return Redirect($"https://localhost:3000/token/{result.Token}");
 		}
 	}
 }

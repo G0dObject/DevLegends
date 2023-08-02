@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace DevLegends.Services
 {
-    internal class JwTokenGenerator : ITokenGeneratorService
+	internal class JwTokenGenerator : ITokenGeneratorService
 	{
 		private readonly IConfigurationService _configuration;
 
